@@ -6,8 +6,8 @@ class Signup {
       baseURL: process.env.VUE_APP_API_BASE_URL
     });
   }
-  createUser() {
-    return this.http.post(`/signup`);
+  createUser(data){
+    return this.http.post(`/signup`, data);
   }
 }
 

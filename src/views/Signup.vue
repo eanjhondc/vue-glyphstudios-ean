@@ -11,6 +11,7 @@
         <v-dialog
         v-model="isError"
         width="500"
+        persistent
         >
         <v-card>
             <v-col
@@ -23,28 +24,21 @@
                 </li>
             </v-col>
             <v-divider></v-divider>
-
-            <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn
-                color="primary"
-                text
-                @click="closeErrorMessage()"
-            >
-                Close
-            </v-btn>
+            <v-card-actions class="justify-center">
+                <v-btn color="primary" depressed rounded  @click="closeErrorMessage()">Close</v-btn>
             </v-card-actions>
+            
         </v-card>
         </v-dialog>
 
         <v-container class="fill-height">
             <v-row row wrap align-center>
-                <v-flex >
+                <v-row justify="space-around">
                     <v-card
-                        class="mx-auto my-auto"
-                        max-width="350"
+                        class="mx-auto my-auto rounded-lg"
+                        width="350"
                         outlined
-                        rounded
+                        
                         tile
                     >
                         <v-card-title primary-title class="justify-center">
@@ -53,42 +47,62 @@
                         </div>
                         </v-card-title>
                         <v-form>
-                            <v-flex lg12 md12 sm12>
-                                <v-text-field
-                                    label="First Name"
-                                    filled
-                                    clearable
-                                    
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex lg12 md12 sm12>
-                                <v-text-field
-                                    label="Last Name"
-                                    filled
-                                    clearable
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex lg12 md12 sm12>
-                                <v-text-field
-                                    label="Email"
-                                    filled
-                                    clearable
-                                ></v-text-field>
-                            </v-flex>
-                            <v-flex lg12 md12 sm12>
+                            <v-row>
+                                <v-flex lg2 md3 sm3></v-flex>
+                                <v-flex lg8 md6 sm6>
+                                    <v-text-field
+                                        label="First Name"
+                                        filled
+                                        clearable
+                                        v-model="firstName"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex lg2 md3 sm3></v-flex>
+                            </v-row>
+                            <v-row>
+                                <v-flex lg2 md3 sm3></v-flex>
+                                <v-flex lg8 md6 sm6>
+                                    <v-text-field
+                                        label="Last Name"
+                                        filled
+                                        clearable
+                                        v-model="lastName"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex lg2 md3 sm3></v-flex>
+                            </v-row>
+                            <v-row>
+                                <v-flex lg2 md3 sm3></v-flex>
+                                <v-flex lg8 md6 sm6>
+                                    <v-text-field
+                                        label="Email"
+                                        filled
+                                        clearable
+                                        v-model="email"
+                                    ></v-text-field>
+                                </v-flex>
+                                <v-flex lg2 md3 sm3></v-flex>
+                            </v-row>
+                            <v-row>
+                                <v-flex lg2 md3 sm3></v-flex>
                                 <v-text-field
                                     label="Phone Number"
                                     filled
                                     clearable
+                                    v-model="mobileNum"
                                 ></v-text-field>
-                            </v-flex>
-                            <v-flex lg12 md12 sm12>
+                                <v-flex lg2 md3 sm3></v-flex>
+                            </v-row>
+                            <v-row>
+                                <v-flex lg2 md3 sm3></v-flex>
                                 <v-text-field
                                     label="Website URL"
                                     filled
                                     clearable
+                                    v-model="weburl"
                                 ></v-text-field>
-                            </v-flex>
+                                <v-flex lg2 md3 sm3></v-flex>
+                            </v-row>
                             <v-flex lg12 md12 sm12>
                                 <v-card-actions class="justify-center">
                                     <v-btn color="primary" depressed rounded  @click="submitUser()">Create Account</v-btn>
@@ -96,9 +110,10 @@
                             </v-flex>
                         </v-form>
                     </v-card>
-                </v-flex>
+                </v-row>
+
+                
             </v-row>
-            
         </v-container>
     </div>
 </template>
@@ -118,9 +133,6 @@ export default {
     weburl: ''
   }),
   computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
   },
   created() {
   },
@@ -146,9 +158,9 @@ export default {
             this.isError = true;
             for(let i = 0; i < res.length; i++){
                 if(i == 0 && res[0] == false){
-                    this.errorMsg.push('Profanities found in First Name');
+                    this.errorMsg.push('First Name contains bad words/swear words/profanities.');
                 }else if(i == 1 && res[1] == false){
-                    this.errorMsg.push('Profanities found in Last Name');
+                    this.errorMsg.push('Last Name contains bad words/swear words/profanities.');
                 }else if(i == 2 && res[2] == false){
                     this.errorMsg.push('Email should be valid. Please use your google.com account.');
                 }else if(i == 3 && res[3] == false){
@@ -157,8 +169,7 @@ export default {
                     this.errorMsg.push('Invalid Website URL. Please do not use query strings.');
                 }
             }
-          }
-            
+          }  
         });
     },
     closeErrorMessage(){
